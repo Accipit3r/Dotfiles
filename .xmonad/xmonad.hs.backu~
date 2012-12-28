@@ -1,0 +1,27 @@
+import XMonad
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
+import XMonad.Util.Run(spawnPipe)
+import XMonad.Util.EZConfig(additionalKeys)
+import System.IO
+
+
+ -- Define amount and names of workspaces  
+ -- myWorkspaces = ["1:main","2:editor","3:web","4","5","6","7","8:chat","9:sonstiges"]
+
+
+main = do
+-- Change path to my location
+xmproc <- spawnPipe "/usr/bin/xmobar /home/accipiter/.xmobarrc"
+--autostartscript
+spawn "bash ~/Dokumente/start.sh"
+xmonad $ defaultConfig
+    { manageHook = manageDocks <+> manageHook defaultConfig
+    , layoutHook = avoidStruts $ layoutHook defaultConfig
+    , terminal="terminal"
+    } `additionalKeys`
+    [ ((mod4Mask, xK_f), spawn "pcmanfm")
+      , ((mod4Mask, xK_e), spawn "gedit --new-window")
+      , ((mod4Mask, xK_c), spawn "geany")
+    ]
+
